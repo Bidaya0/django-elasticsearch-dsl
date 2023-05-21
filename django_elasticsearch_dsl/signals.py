@@ -159,18 +159,26 @@ else:
                 except ObjectDoesNotExist:
                     related = None
                 if related is not None:
-            #        doc_instance.update(related)
-                    if related.__class__ in registry._models:
-                        bulk_data = {}
-                        for doc in registry._models[related.__class__]:
-                            if not doc.django.ignore_signals:
-                                #doc().update(instance, **kwargs)
-                                #self.handle_save(sender, related)
-                                bulk_data[
-                                    doc_instance.__class__.__name__] = list(doc_instance._get_actions(
-                                        [instance], action))
-                    if bulk_data:
-                        self.registry_delete_task.delay(bulk_data)
+                    doc_instance.update(related)
+                    if isinstance(thing, models.Model):
+                        object_list = [thing]
+                    else:
+                        object_list = thing
+                    doc_instance._bulk(
+                        self._get_actions(object_list, action),
+                        parallel=parallel,
+                    )
+                    #if related.__class__ in registry._models:
+                    #    bulk_data = {}
+                    #    for doc in registry._models[related.__class__]:
+                    #        if not doc.django.ignore_signals:
+                    #            #doc().update(instance, **kwargs)
+                    #            #self.handle_save(sender, related)
+                    #            bulk_data[
+                    #                doc_instance.__class__.__name__] = list(doc_instance._get_actions(
+                    #                    [instance], action))
+                    #if bulk_data:
+                    #    self.registry_delete_task.delay(bulk_data)
                     #if isinstance(related, models.Model):
                     #    object_list = [related]
                     #else:

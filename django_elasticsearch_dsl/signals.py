@@ -164,8 +164,8 @@ else:
                     else:
                         object_list = related
                     bulk_data[
-                        doc_instance.__class__.__name__] = doc_instance._get_actions(
-                            object_list, action)
+                        doc_instance.__class__.__name__] = list(doc_instance._get_actions(
+                            object_list, action))
             self.registry_delete_related_task.delay(bulk_data)
 
         @shared_task()
@@ -187,8 +187,8 @@ else:
                     if not doc.django.ignore_signals:
                         doc_instance = doc()
                         bulk_data[
-                            doc_instance.__class__.__name__] = doc_instance._get_actions(
-                                [instance], action)
+                            doc_instance.__class__.__name__] = list(doc_instance._get_actions(
+                                [instance], action))
                 if bulk_data:
                     self.registry_delete_task.delay(bulk_data)
 

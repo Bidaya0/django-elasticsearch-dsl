@@ -164,10 +164,11 @@ else:
                         object_list = [related]
                     else:
                         object_list = related
-                    doc_instance._bulk(
-                        list(doc_instance._get_actions(object_list, action)),
-                        parallel=True,
-                    )
+                    #doc_instance._bulk(
+                    #    list(doc_instance._get_actions(object_list, action)),
+                    #    parallel=True,
+                    #)
+                    bulk_data = list(doc_instance._get_actions(object_list, action)),
                     #if related.__class__ in registry._models:
                     #    bulk_data = {}
                     #    for doc in registry._models[related.__class__]:
@@ -186,15 +187,14 @@ else:
                     #bulk_data[
                     #    doc_instance.__class__.__name__] = list(doc_instance._get_actions(
                     #        object_list, action))
-            #self.registry_delete_related_task.delay(bulk_data)
+                    self.registry_delete_related_task.delay(doc_instance.__class__.__name__, bulk_data)
 
         @shared_task()
-        def registry_delete_related_task(data):
-            for doc_label, bulk_data in data:
-                doc_instance = import_module(doc_label)
-                kwargs = dict()
-                parallel = True
-                doc_instance._bulk(bulk_data, parallel=parallel, **kwargs)
+        def registry_delete_related_task(doc_label, data):
+            doc_instance = import_module(doc_label)
+            kwargs = dict()
+            parallel = True
+            doc_instance._bulk(bulk_data, parallel=parallel, **kwargs)
 
         def prepare_registry_delete_task(self, instance):
             """

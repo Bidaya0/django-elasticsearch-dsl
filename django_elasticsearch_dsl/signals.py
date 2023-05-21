@@ -166,7 +166,7 @@ else:
                         object_list = related
                     doc_instance._bulk(
                         doc_instance._get_actions(object_list, action),
-                        parallel=parallel,
+                        parallel=True,
                     )
                     #if related.__class__ in registry._models:
                     #    bulk_data = {}

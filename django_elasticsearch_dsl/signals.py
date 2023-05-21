@@ -160,7 +160,7 @@ else:
                     related = None
                 if related is not None:
                     doc_instance.update(related)
-                    if isinstance(thing, models.Model):
+                    if isinstance(related, models.Model):
                         object_list = [related]
                     else:
                         object_list = related

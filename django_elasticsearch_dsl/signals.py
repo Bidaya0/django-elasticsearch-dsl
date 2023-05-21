@@ -151,7 +151,7 @@ else:
             And pass that to celery.
             """
             bulk_data = {}
-            action = 'delete'
+            action = 'index'
             for doc in registry._get_related_doc(instance):
                 doc_instance = doc(related_instance_to_ignore=instance)
                 try:
@@ -161,10 +161,16 @@ else:
                 if related is not None:
                     doc_instance.update(related)
                     if related.__class__ in registry._models:
+                        bulk_data = {}
                         for doc in registry._models[related.__class__]:
                             if not doc.django.ignore_signals:
                                 #doc().update(instance, **kwargs)
-                                self.handle_save(sender, related)
+                                #self.handle_save(sender, related)
+                                bulk_data[
+                                    doc_instance.__class__.__name__] = list(doc_instance._get_actions(
+                                        [instance], action))
+                    if bulk_data:
+                        self.registry_delete_task.delay(bulk_data)
                     #if isinstance(related, models.Model):
                     #    object_list = [related]
                     #else:

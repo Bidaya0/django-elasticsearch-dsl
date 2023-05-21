@@ -159,14 +159,15 @@ else:
                 except ObjectDoesNotExist:
                     related = None
                 if related is not None:
-                    if isinstance(related, models.Model):
-                        object_list = [related]
-                    else:
-                        object_list = related
-                    bulk_data[
-                        doc_instance.__class__.__name__] = list(doc_instance._get_actions(
-                            object_list, action))
-            self.registry_delete_related_task.delay(bulk_data)
+                    doc_instance.update(related, **kwargs)
+                    #if isinstance(related, models.Model):
+                    #    object_list = [related]
+                    #else:
+                    #    object_list = related
+                    #bulk_data[
+                    #    doc_instance.__class__.__name__] = list(doc_instance._get_actions(
+                    #        object_list, action))
+            #self.registry_delete_related_task.delay(bulk_data)
 
         @shared_task()
         def registry_delete_related_task(data):

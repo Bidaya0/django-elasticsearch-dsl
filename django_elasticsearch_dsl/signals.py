@@ -136,7 +136,7 @@ else:
             doesn't exists anymore and we can't get the related models instance.
             """
             #registry.delete_related(instance)
-            self.prepare_registry_delete_related_task(instance)
+            self.prepare_registry_delete_related_task(sender, instance)
 
         def handle_delete(self, sender, instance, **kwargs):
             """Handle delete.
@@ -145,7 +145,7 @@ else:
             """
             registry.delete(instance, raise_on_error=False)
 
-        def prepare_registry_delete_related_task(self, instance):
+        def prepare_registry_delete_related_task(self, sender, instance):
             """
             Select its related instance before this instance was deleted.
             And pass that to celery.

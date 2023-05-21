@@ -159,7 +159,10 @@ else:
                 except ObjectDoesNotExist:
                     related = None
                 if related is not None:
-                    doc_instance.update(related)
+                    if related.__class__ in self._models:
+                        for doc in self._models[related.__class__]:
+                            if not doc.django.ignore_signals:
+                                self.handle_save(sender, related)
                     #if isinstance(related, models.Model):
                     #    object_list = [related]
                     #else:

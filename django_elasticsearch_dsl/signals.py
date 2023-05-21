@@ -160,8 +160,8 @@ else:
                     related = None
                 if related is not None:
                     doc_instance.update(related)
-                    if related.__class__ in doc_instance._models:
-                        for doc in doc_instance._models[related.__class__]:
+                    if related.__class__ in registry._models:
+                        for doc in registry._models[related.__class__]:
                             if not doc.django.ignore_signals:
                                 #doc().update(instance, **kwargs)
                                 self.handle_save(sender, related)

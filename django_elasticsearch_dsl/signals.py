@@ -161,8 +161,8 @@ else:
                 if related is not None:
                     if related.__class__ in registry._models:
                         for doc in registry._models[related.__class__]:
-                            if not doc.django.ignore_signals:
-                                self.handle_save(sender, related)
+                            print(related)
+                            self.handle_save(sender, related)
                     #if isinstance(related, models.Model):
                     #    object_list = [related]
                     #else:

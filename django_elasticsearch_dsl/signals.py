@@ -167,6 +167,12 @@ else:
 
         @shared_task()
         def registry_delete_task(doc_label, data):
+            """
+            Handle the bulk delete data on the registry as a Celery task.
+            The different implementations used are due to the difference between delete and update operations. 
+            The update operation can re-read the updated data from the database to ensure eventual consistency, 
+            but the delete needs to be processed before the database record is deleted to obtain the associated data.
+            """
             doc_instance = import_module(doc_label)
             parallel = True
             doc_instance._bulk(bulk_data, parallel=parallel)

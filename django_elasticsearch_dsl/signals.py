@@ -151,7 +151,7 @@ else:
             And pass that to celery.
             """
             bulk_data = {}
-            action = 'index'
+            action = 'delete'
             for doc in registry._get_related_doc(instance):
                 doc_instance = doc(related_instance_to_ignore=instance)
                 try:

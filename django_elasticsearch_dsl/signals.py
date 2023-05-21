@@ -135,8 +135,8 @@ else:
             We need to do this before the real delete otherwise the relation
             doesn't exists anymore and we can't get the related models instance.
             """
-            registry.delete_related(instance)
-            #self.prepare_registry_delete_related_task(instance)
+            #registry.delete_related(instance)
+            self.prepare_registry_delete_related_task(instance)
 
         def handle_delete(self, sender, instance, **kwargs):
             """Handle delete.
@@ -159,7 +159,7 @@ else:
                 except ObjectDoesNotExist:
                     related = None
                 if related is not None:
-                    doc_instance.update(related, action=action)
+                    doc_instance.update(related)
                     #if isinstance(related, models.Model):
                     #    object_list = [related]
                     #else:

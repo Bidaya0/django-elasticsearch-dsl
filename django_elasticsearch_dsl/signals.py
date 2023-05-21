@@ -159,7 +159,7 @@ else:
                 except ObjectDoesNotExist:
                     related = None
                 if related is not None:
-                    doc_instance.update(related, **kwargs)
+                    doc_instance.update(related, action=action)
                     #if isinstance(related, models.Model):
                     #    object_list = [related]
                     #else:

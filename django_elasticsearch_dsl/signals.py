@@ -159,7 +159,7 @@ else:
                 except ObjectDoesNotExist:
                     related = None
                 if related is not None:
-                    doc_instance.update(related)
+            #        doc_instance.update(related)
                     if related.__class__ in registry._models:
                         bulk_data = {}
                         for doc in registry._models[related.__class__]:

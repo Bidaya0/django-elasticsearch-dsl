@@ -161,11 +161,11 @@ else:
                 if related is not None:
                     doc_instance.update(related)
                     if isinstance(thing, models.Model):
-                        object_list = [thing]
+                        object_list = [related]
                     else:
-                        object_list = thing
+                        object_list = related
                     doc_instance._bulk(
-                        self._get_actions(object_list, action),
+                        doc_instance._get_actions(object_list, action),
                         parallel=parallel,
                     )
                     #if related.__class__ in registry._models:

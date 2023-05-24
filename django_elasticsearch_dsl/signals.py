@@ -194,7 +194,7 @@ else:
                         object_list = [related]
                     else:
                         object_list = related
-                    bulk_data = list(doc_instance._get_actions(object_list, action)),
+                    bulk_data = list(doc_instance.get_actions(object_list, action)),
                     self.registry_delete_task.delay(doc_instance.__class__.__name__, bulk_data)
 
         @shared_task()
